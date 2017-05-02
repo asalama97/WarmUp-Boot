@@ -186,7 +186,7 @@ void loop() {
     }
   }
 
-  if (stateA == 1) {
+  if (stateA == 1 && temperature <95) {               // Run when button is on and temperature is below threshold (this value is up to you)
     analogWrite(fetPinA, potValueA);                 // Write value onto MOSFET
 
     if (potValueA <= 260) {                         // 100% power, all LEDs are on
@@ -221,8 +221,11 @@ void loop() {
       }
     }
   
+  else if (temperature > 95) {          // Turn off MOSFET/pad (but not the lights) if temperature is too high 
+    analogWrite(fetPinA, pinDown);
+  }
 
-  else if (stateA == 0 ) {
+  else if (stateA == 0 ) {              // Turn off everything when button is turned off
     analogWrite(fetPinA, pinDown);      // Turn off MOSFET and lights
     digitalWrite(led1A, LOW);
     digitalWrite(led2A, LOW);
@@ -274,7 +277,7 @@ if (buttonStateB == HIGH) {
   Serial.print("\t                 Button StateB: ");
   Serial.println(stateB);
 
-  if (stateB == 1) {
+  if (stateB == 1 && temp1 < 95) {
     analogWrite(fetPinB, 255);                 // Write value onto MOSFET
 
     if (potValueB <= 260) {
@@ -308,6 +311,9 @@ if (buttonStateB == HIGH) {
         }
       }
     }
+  else if (temp1 > 95) {
+    analogWrite(fetPinB, pinDown);
+  }  
 
   else if (stateB == 0) {
     analogWrite(fetPinB, 255);
